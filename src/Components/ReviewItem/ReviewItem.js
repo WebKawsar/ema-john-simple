@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ReviewItem = (props) => {
-    const {name, price, quantity} = props.product;
+    const {name, price, quantity, key} = props.product;
     const reviewItemStyle = {
         borderBottom: "2px solid gray",
         padding: "40px 40px",
@@ -15,7 +15,7 @@ const ReviewItem = (props) => {
             <p>Quantity: {quantity}</p>
             <p>Price: {price}</p>
             <br/>
-            <button className="btn-cart">Remove</button>
+            <button onClick={() => props.removeProduct(key)} className="btn-cart">Remove</button>
         </div>
     );
 };

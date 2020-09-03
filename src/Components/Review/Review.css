@@ -1,0 +1,10 @@
+
+.review-product {
+    float: left;
+    width: 70%;
+}
+
+.review-cart {
+    width: 30%;
+    float: right;
+}

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 
 const Cart = (props) => {
 
     const cart = props.cart;
-    const total = cart.reduce((total, value) => total + value.price, 0);
+    const total = cart.reduce((total, value) => total + (value.price * value.quantity), 0);
 
     function getNumber(num){
         return parseFloat(num.toFixed(2));
@@ -31,9 +31,9 @@ const Cart = (props) => {
                 <small>Shipping Cost : {getNumber(shipping)}</small>
             </p>
             <p>Total : {getNumber(total + shipping)}</p>
-            <Link to="/review">
-                <button className="btn-cart">Review order</button>
-            </Link>
+            {
+                props.children
+            }
         </div>
     );
 };
