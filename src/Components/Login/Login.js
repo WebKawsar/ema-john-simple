@@ -126,7 +126,7 @@ function Login() {
   return (
     <div style={{textAlign: "center"}}>
         {
-          user.isSignedIn ? <button onClick={signOut}>Sign Out</button> : <button onClick={googleSignIn}>Sign In</button>
+          user.isSignedIn ? <button onClick={signOut}>Sign Out</button> : <button onClick={googleSignIn}>Sign In using Google</button>
         }
         <br/>
         <button onClick={fbSignIn}>Log in using Facebook</button>

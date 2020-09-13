@@ -24,7 +24,6 @@ export const handleGoogleSignIn = () => {
       }
 
       return signedInUser;
-
     })
     .catch(error => console.log(error.errorCode, error.errorMessage))
 }
@@ -32,21 +31,27 @@ export const handleGoogleSignIn = () => {
 export const handleFbSignIn = () => {
     const fbProvider = new firebase.auth.FacebookAuthProvider();
     return firebase.auth().signInWithPopup(fbProvider)
-    .then(function(result) {
-
-      const token = result.credential.accessToken;
-      const user = result.user;
-      user.success = true;
-      return user;
+    .then(res => {
       
+      const {displayName, email, photoURL} = res.user;
+      const fbSignedInUser = {
+        isSignedIn: true,
+        name: displayName,
+        email: email,
+        photo: photoURL,
+        success: true
+      }
+      
+      return fbSignedInUser;
     })
-    .catch(function(error) {
+    .catch(error => {
 
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode, errorMessage);
+        const newUserInfo = {};
+        newUserInfo.error = error.message;
+        newUserInfo.success = false;
+        return newUserInfo;
 
-    });
+    })
 
 }
 
