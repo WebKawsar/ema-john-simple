@@ -20,12 +20,20 @@ export const handleGoogleSignIn = () => {
         name: displayName,
         email: email,
         photo: photoURL,
-        success: true
+        success: true,
+        error: ""
       }
 
       return signedInUser;
     })
-    .catch(error => console.log(error.errorCode, error.errorMessage))
+    .catch(error => {
+
+      const newUserInfo = {};
+      newUserInfo.isSignedIn = false;
+      newUserInfo.error = error.message;
+      newUserInfo.success = false;
+      return newUserInfo;
+    })
 }
 
 export const handleFbSignIn = () => {
@@ -39,7 +47,8 @@ export const handleFbSignIn = () => {
         name: displayName,
         email: email,
         photo: photoURL,
-        success: true
+        success: true,
+        error: ""
       }
       
       return fbSignedInUser;
@@ -47,6 +56,7 @@ export const handleFbSignIn = () => {
     .catch(error => {
 
         const newUserInfo = {};
+        newUserInfo.isSignedIn = false;
         newUserInfo.error = error.message;
         newUserInfo.success = false;
         return newUserInfo;
@@ -59,6 +69,7 @@ export const handleSignOut = () => {
 
     return firebase.auth().signOut()
     .then(response => {
+      
       const signOut = {
         isSignedIn: false,
         name: "",
@@ -117,16 +128,18 @@ export const signInWithEmailAndPassword = (email, password) => {
 
   }
 
-  const updateUserInfo = name => {
+  const updateUserInfo = (name) => {
 
     const user = firebase.auth().currentUser;
     user.updateProfile({
 
       displayName: name
     })
-    .then( () => {
+    .then( response => {
 
-      console.log("User name updated successfully"); 
+      
+      console.log("User updated successfully");
+      return response; 
     })
     .catch(error => {
 

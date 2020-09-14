@@ -6,11 +6,12 @@ import Cart from '../Cart/Cart';
 import {addToDatabaseCart, getDatabaseCart} from "../../utilities/databaseManager";
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Footer from '../Footer/Footer';
 
 
 const Shop = () => {
     const first10 = fakeData.slice(0, 10);
-    const [products, setProducts] = useState(first10);
+    const [products] = useState(first10);
     const [cart, setCart] = useState([]);
 
     const handleAddProduct = (product) => {
@@ -52,18 +53,23 @@ const Shop = () => {
     
 
     return (
-        <div className="shop-container">
-            <div className="product-container">
-            {
-                products.map(singleProduct => <Product showAddToCart={true} handleAddProduct={handleAddProduct} product={singleProduct} key={singleProduct.key}>{singleProduct.name}</Product>)
-            }
+        <div className="container">
+            <div className="shop-container">
+                <div className="product-container">
+                {
+                    products.map(singleProduct => <Product showAddToCart={true} handleAddProduct={handleAddProduct} product={singleProduct} key={singleProduct.key}>{singleProduct.name}</Product>)
+                }
+                </div>
+                <div className="cart-container">
+                    <Cart cart={cart}>
+                        <Link to="/review">
+                            <button className="btn-cart">Review order</button>
+                        </Link>
+                    </Cart>
+                </div>
             </div>
-            <div className="cart-container">
-                <Cart cart={cart}>
-                    <Link to="/review">
-                        <button className="btn-cart">Review order</button>
-                    </Link>
-                </Cart>
+            <div className="footer-section">
+                <Footer></Footer>
             </div>
         </div>
     );

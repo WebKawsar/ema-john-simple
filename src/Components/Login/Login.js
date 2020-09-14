@@ -24,17 +24,35 @@ function Login() {
   initializeLoginFramework();
 
   const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+
   const history = useHistory();
   const location = useLocation();
   let { from } = location.state || { from: { pathname: "/" } };
 
+  const handleResponse = (response, redirect) => {
+
+    setUser(response);
+    setLoggedInUser(response);
+    if(redirect){
+      history.replace(from);
+    }
+
+  }
 
   const googleSignIn = () => {
+
     handleGoogleSignIn()
     .then(response => {
 
-      handleResponse(response, true);
+      if(response.isSignedIn && response.success){
 
+        handleResponse(response, true);
+      }
+      else{
+
+        handleResponse(response, false);
+      }
+      
     })
   }
 
@@ -46,11 +64,19 @@ function Login() {
     })
   }
 
-  const fbSignIn = () => {
+  const facebookSignIn = () => {
     handleFbSignIn()
     .then(response => {
 
-      handleResponse(response, true);
+      if(response.isSignedIn && response.success){
+
+        handleResponse(response, true);
+      }
+      else{
+
+        handleResponse(response, false);
+      }
+
     })
   }
 
@@ -62,8 +88,7 @@ function Login() {
       createUserWithEmailAndPassword(user.name, user.email, user.password)
       .then(response => {
 
-        handleResponse(response, true);
-
+          handleResponse(response, true);
       })
 
     }
@@ -79,19 +104,6 @@ function Login() {
 
     e.preventDefault();
   }
-
-
-  const handleResponse = (response, redirect) => {
-
-    setUser(response);
-    setLoggedInUser(response);
-    if(redirect){
-      history.replace(from);
-    }
-
-  }
-
-
 
 
   const handleChange = (event) => {
@@ -121,15 +133,13 @@ function Login() {
 
 
 
-
-
   return (
     <div style={{textAlign: "center"}}>
         {
           user.isSignedIn ? <button onClick={signOut}>Sign Out</button> : <button onClick={googleSignIn}>Sign In using Google</button>
         }
         <br/>
-        <button onClick={fbSignIn}>Log in using Facebook</button>
+        <button onClick={facebookSignIn}>Sign in using Facebook</button>
         {
           user.isSignedIn && <div>
 
@@ -145,11 +155,11 @@ function Login() {
         <label htmlFor="newUser">New user Sign Up</label>
 
         <form onSubmit={handleSubmit}>
-          {newUser && <input type="text" onBlur={handleChange} name="name" id="" placeholder="Your name"/>}
+          {newUser && <input type="text" onBlur={handleChange} name="name" placeholder="Your name"/>}
           <br/>
-          <input type="text" name="email" onBlur={handleChange} id="" placeholder="Your email" required/>
+          <input type="text" name="email" onBlur={handleChange} placeholder="Your email" required/>
           <br/>
-          <input type="password" name="password" onBlur={handleChange} id="" placeholder="Password" required/>
+          <input type="password" name="password" onBlur={handleChange} placeholder="Password" required/>
           <br/>
           <input type="submit" value={newUser ? "Sign Up" : "Sign In"}/>
         </form>

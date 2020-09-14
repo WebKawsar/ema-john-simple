@@ -1,0 +1,12 @@
+.name-highlight {
+    color: goldenrod;
+    text-transform: uppercase;
+    font-style: italic;
+    text-decoration: none;
+}
+.footer p {
+    text-transform: capitalize;
+    margin: 50px 0;
+    font-size: 20px;
+    font-weight: 700;
+}

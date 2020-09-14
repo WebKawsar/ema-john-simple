@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import "./Shipment.css";
 import { UserContext } from '../../App';
@@ -6,9 +6,9 @@ import { useContext } from 'react';
 
 
 const Shipment = () => {
-    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+    const [loggedInUser] = useContext(UserContext);
 
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm();
     const onSubmit = data => console.log(data);
   
     
