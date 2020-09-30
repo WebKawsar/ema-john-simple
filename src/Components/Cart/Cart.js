@@ -4,7 +4,7 @@ import React from 'react';
 const Cart = (props) => {
 
     const cart = props.cart;
-    const total = cart.reduce((total, value) => total + (value.price * value.quantity), 0);
+    const total = cart.reduce((total, value) => total + (value.price * value.quantity || 1), 0);
 
     function getNumber(num){
         return parseFloat(num.toFixed(2));

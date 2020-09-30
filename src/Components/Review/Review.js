@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager';
-import fakeData from '../../fakeData';
 import ReviewItem from '../ReviewItem/ReviewItem';
 import Cart from '../Cart/Cart';
 import "./Review.css";
@@ -18,12 +17,17 @@ const Review = () => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
 
-        const cartProducts = productKeys.map(key => {
-            const product = fakeData.find(pd => pd.key === key)
-            product.quantity = savedCart[key];
-            return product;
+
+        fetch("https://immense-escarpment-74086.herokuapp.com/productsByKeys", {
+            method: 'POST',
+            body: JSON.stringify(productKeys),
+            headers: {
+                'Content-type': 'application/json'
+            }
         })
-        setCart(cartProducts);
+        .then(response => response.json())
+        .then(data => setCart(data))
+
 
 
     }, []);
@@ -37,15 +41,10 @@ const Review = () => {
     const handleProceedCheckout = () => {
 
         history.push("/shipment");
-
-        
-        // setCart([]);
-        // setOrderPlaced(true);
-        // processOrder();
     }
     let thankYou;
-    if(orderPlaced){
-        thankYou = <img src={happyImage} alt=""/>
+    if (orderPlaced) {
+        thankYou = <img src={happyImage} alt="" />
     }
 
     return (

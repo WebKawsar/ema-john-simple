@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import fakeData from '../../fakeData';
 import "./Shop.css";
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
@@ -10,9 +9,15 @@ import Footer from '../Footer/Footer';
 
 
 const Shop = () => {
-    const first10 = fakeData.slice(0, 10);
-    const [products] = useState(first10);
+
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+
+    useEffect(() => {
+        fetch("https://immense-escarpment-74086.herokuapp.com/products")
+        .then(response => response.json())
+        .then(data => setProducts(data))
+    }, [])
 
     const handleAddProduct = (product) => {
         const toBeAddedKey = product.key;
@@ -40,14 +45,17 @@ const Shop = () => {
 
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        const previousCart = productKeys.map(existingKey => {
-            const product = fakeData.find(findPro => findPro.key === existingKey);
-            product.quantity = savedCart[existingKey];
-            return product;
-
+        fetch("https://immense-escarpment-74086.herokuapp.com/productsByKeys", {
+            method: 'POST',
+            body: JSON.stringify(productKeys),
+            headers: {
+                'Content-type': 'application/json'
+            }
         })
+        .then(response => response.json())
+        .then(data => setCart(data))
 
-       setCart(previousCart);
+
 
     }, []);
     
